@@ -69,11 +69,46 @@ All colors MUST be HSL. Neumorphic design with soft shadows and depth.
   }
 
   .dark {
-    /* Dark mode neumorphic (optional - focusing on light theme) */
-    --background: 215 25% 15%;
-    --foreground: 216 14% 89%;
-    --neu-shadow-dark: 215 25% 10%;
-    --neu-shadow-light: 215 25% 20%;
+  /* Dark mode neumorphic */
+  --background: 220 15% 12%;
+  --foreground: 0 0% 98%;
+
+  --card: 220 15% 14%;
+  --card-foreground: 0 0% 98%;
+
+  --popover: 220 15% 14%;
+  --popover-foreground: 0 0% 98%;
+
+  --primary: 220 70% 60%; /* Vibrant soft blue */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 270 50% 55%;
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 220 15% 22%;
+  --muted-foreground: 220 10% 65%;
+
+  --accent: 180 45% 40%;
+  --accent-foreground: 0 0% 98%;
+
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 220 15% 22%;
+  --input: 220 15% 22%;
+  --ring: 220 70% 60%;
+
+  --neu-shadow-dark: 220 25% 8%;
+  --neu-shadow-light: 220 15% 18%;
+
+  --sidebar-background: 220 15% 10%;
+  --sidebar-foreground: 0 0% 95%;
+  --sidebar-primary: 220 70% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 220 15% 18%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 220 15% 25%;
+  --sidebar-ring: 220 70% 60%;
   }
 }
 
@@ -125,5 +160,17 @@ All colors MUST be HSL. Neumorphic design with soft shadows and depth.
   
   .neu-card {
     @apply neu p-6;
+  }
+
+  /* 3D flip utility for theme toggle */
+  .flip-3d {
+    transform-style: preserve-3d;
+    perspective: 800px;
+  }
+  .flip-face {
+    backface-visibility: hidden;
+  }
+  .flip-back {
+    transform: rotateY(180deg);
   }
 }
