@@ -16,6 +16,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
+import AmbientBackground from "@/components/AmbientBackground";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <AmbientBackground />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />

@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { LogOut, User } from "lucide-react";
+import DarkModeToggle from "./DarkModeToggle";
 
 interface NavItem {
   label: string;
@@ -73,6 +74,7 @@ const Navigation = () => {
         </div>
         
         <div className="flex items-center gap-3">
+          <DarkModeToggle />
           {user && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
