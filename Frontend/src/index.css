@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* LeaseLink 3D Neumorphic Design System
+All colors MUST be HSL. Neumorphic design with soft shadows and depth.
+*/
+
+@layer base {
+  :root {
+    /* Neumorphic Base Colors */
+    --background: 216 14% 89%;  /* #e0e5ec */
+    --foreground: 215 25% 35%;
+
+    --card: 216 14% 89%;
+    --card-foreground: 215 25% 35%;
+
+    --popover: 216 14% 89%;
+    --popover-foreground: 215 25% 35%;
+
+    /* Neumorphic Primary Colors */
+    --primary: 220 60% 65%;  /* Soft blue */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 270 50% 75%;  /* Soft purple */
+    --secondary-foreground: 215 25% 35%;
+
+    --muted: 216 12% 84%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 180 45% 70%;  /* Soft teal */
+    --accent-foreground: 215 25% 35%;
+
+    --destructive: 0 70% 65%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 31% 91%;
+    --input: 214 31% 91%;
+    --ring: 220 60% 65%;
+
+    --radius: 1.25rem;  /* 20px for neumorphic rounded corners */
+
+    /* Neumorphic Shadow Colors */
+    --neu-shadow-dark: 210 25% 64%;  /* #a3b1c6 */
+    --neu-shadow-light: 0 0% 100%;   /* #ffffff */
+
+    /* Neumorphic Gradients */
+    --gradient-neu: linear-gradient(145deg, hsl(216 14% 91%), hsl(216 14% 87%));
+    --gradient-neu-hover: linear-gradient(145deg, hsl(220 60% 68%), hsl(220 60% 62%));
+    
+    /* Animation Timings */
+    --transition-neu: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark mode neumorphic (optional - focusing on light theme) */
+    --background: 215 25% 15%;
+    --foreground: 216 14% 89%;
+    --neu-shadow-dark: 215 25% 10%;
+    --neu-shadow-light: 215 25% 20%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-poppins;
+  }
+}
+
+/* Neumorphic Component Classes */
+@layer components {
+  .neu {
+    @apply bg-background rounded-[20px] transition-all duration-300;
+    box-shadow: 8px 8px 16px hsl(var(--neu-shadow-dark)), 
+                -8px -8px 16px hsl(var(--neu-shadow-light));
+  }
+  
+  .neu-inset {
+    @apply bg-background rounded-[20px] transition-all duration-300;
+    box-shadow: inset 8px 8px 16px hsl(var(--neu-shadow-dark)), 
+                inset -8px -8px 16px hsl(var(--neu-shadow-light));
+  }
+  
+  .neu-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 12px 12px 24px hsl(var(--neu-shadow-dark)), 
+                -12px -12px 24px hsl(var(--neu-shadow-light));
+  }
+  
+  .neu-pressed:active {
+    transform: translateY(1px);
+    box-shadow: 4px 4px 8px hsl(var(--neu-shadow-dark)), 
+                -4px -4px 8px hsl(var(--neu-shadow-light));
+  }
+  
+  .neu-button {
+    @apply neu neu-hover neu-pressed cursor-pointer select-none;
+    transition: var(--transition-neu);
+  }
+  
+  .neu-input {
+    @apply neu-inset border-0 outline-none bg-transparent;
+    transition: var(--transition-neu);
+  }
+  
+  .neu-card {
+    @apply neu p-6;
+  }
+}
