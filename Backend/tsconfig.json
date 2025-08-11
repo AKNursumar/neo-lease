@@ -1,23 +1,32 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2019",
-    "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": "src",
-    "incremental": true,
-    "strict": false,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
     "skipLibCheck": true,
-    "moduleResolution": "node",
-    "types": ["node", "jest"],
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"],
+      "@/lib/*": ["./lib/*"],
+      "@/types/*": ["./types/*"],
+      "@/utils/*": ["./utils/*"],
+      "@/middleware/*": ["./middleware/*"]
+    }
   },
-  "exclude": ["node_modules", "dist"],
-  "include": ["src"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

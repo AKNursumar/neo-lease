@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useSupabaseAuth } from "@/contexts/SupabaseAuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Index = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuth();
+  const { user } = useSupabaseAuth();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
@@ -32,9 +32,9 @@ const Index = () => {
           transition={{ delay: 0.4, duration: 0.6 }}
         >
           Your Complete Rental Management System
-          {isAuthenticated && (
+          {user && (
             <span className="block text-sm mt-2">
-              Welcome back, <strong>{user?.fullName || user?.email}</strong> ({user?.role})
+              Welcome back, <strong>{user?.user_metadata?.full_name || user?.email}</strong>
             </span>
           )}
         </motion.p>
@@ -57,7 +57,7 @@ const Index = () => {
             </CardHeader>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => isAuthenticated ? navigate('/dashboard') : navigate('/login')}>
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => user ? navigate('/dashboard') : navigate('/login')}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <span className="text-2xl">📊</span>
@@ -65,12 +65,12 @@ const Index = () => {
               </CardTitle>
               <CardDescription>
                 View your rental analytics and manage your account
-                {!isAuthenticated && <span className="block text-xs text-orange-600 mt-1">Requires login</span>}
+                {!user && <span className="block text-xs text-orange-600 mt-1">Requires login</span>}
               </CardDescription>
             </CardHeader>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => isAuthenticated ? navigate('/admin') : navigate('/login')}>
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => user ? navigate('/admin') : navigate('/login')}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <span className="text-2xl">⚙️</span>
@@ -78,7 +78,7 @@ const Index = () => {
               </CardTitle>
               <CardDescription>
                 Manage inventory, users, and system settings
-                {!isAuthenticated && <span className="block text-xs text-orange-600 mt-1">Requires admin login</span>}
+                {!user && <span className="block text-xs text-orange-600 mt-1">Requires admin login</span>}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -90,22 +90,22 @@ const Index = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
         >
-          {isAuthenticated ? (
+          {user ? (
             <>
               <Button 
                 size="lg" 
-                onClick={() => navigate('/dashboard')}
-                className="text-lg px-8 py-3"
-              >
-                Go to Dashboard
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg"
                 onClick={() => navigate('/products')}
                 className="text-lg px-8 py-3"
               >
                 Browse Products
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={() => navigate('/dashboard')}
+                className="text-lg px-8 py-3"
+              >
+                Go to Dashboard
               </Button>
             </>
           ) : (

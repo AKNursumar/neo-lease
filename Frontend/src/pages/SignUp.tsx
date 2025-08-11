@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useSupabaseAuth } from "@/contexts/SupabaseAuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,14 +19,14 @@ const SignUp = () => {
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const { register, loading, isAuthenticated } = useAuth();
+  const { signUp, loading, user } = useSupabaseAuth();
 
   // Redirect if already authenticated
-  if (isAuthenticated) {
-    const from = location.state?.from?.pathname || "/dashboard";
-    navigate(from, { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      navigate('/products', { replace: true });
+    }
+  }, [user, navigate]);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -76,14 +76,22 @@ const SignUp = () => {
     }
 
     try {
-      const success = await register(email, password, fullName, phone || undefined);
-      if (success) {
-        setSuccess("Account created successfully! Redirecting to dashboard...");
-        setTimeout(() => {
-          const from = location.state?.from?.pathname || "/dashboard";
-          navigate(from, { replace: true });
-        }, 1500);
-      }
+      await signUp(email, password, { 
+        data: {
+          full_name: fullName.trim(),
+          phone: phone.trim() || undefined 
+        }
+      });
+      setSuccess("Account created successfully! Please check your email to confirm your account.");
+      setTimeout(() => {
+        navigate('/login', { 
+          replace: true,
+          state: { 
+            message: 'Account created! Please check your email to confirm your account, then sign in.',
+            type: 'success'
+          }
+        });
+      }, 3000);
     } catch (error: any) {
       setError(error.message || "Registration failed. Please try again.");
     }

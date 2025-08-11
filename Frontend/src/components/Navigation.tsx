@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
+import { useSupabaseAuth } from "@/contexts/SupabaseAuthContext";
 import { Button } from "@/components/ui/button";
-import { LogOut, User } from "lucide-react";
+import { LogOut, LogIn, User, ShoppingCart } from "lucide-react";
 import DarkModeToggle from "./DarkModeToggle";
+import { getUserRole } from "@/lib/supabase";
 
 interface NavItem {
   label: string;
@@ -23,19 +25,38 @@ const navItems: NavItem[] = [
 const Navigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user, signOut } = useSupabaseAuth();
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [cartItemCount] = useState(0); // TODO: Implement cart context for Supabase
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (user) {
+        const role = await getUserRole();
+        setUserRole(role);
+      } else {
+        setUserRole(null);
+      }
+    };
+
+    fetchUserRole();
+  }, [user]);
 
   // Filter nav items based on user role
   const filteredNavItems = navItems.filter(item => {
     if (item.path === '/admin') {
-      return user?.role === 'admin';
+      return userRole === 'admin';
     }
     return true;
   });
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await signOut();
     navigate("/");
+  };
+
+  const handleLogin = () => {
+    navigate("/login");
   };
 
   return (
@@ -75,6 +96,26 @@ const Navigation = () => {
         
         <div className="flex items-center gap-3">
           <DarkModeToggle />
+          
+          {/* Cart Button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/cart")}
+            className="neu-button relative text-foreground hover:text-primary"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            {cartItemCount > 0 && (
+              <motion.span
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center"
+              >
+                {cartItemCount > 99 ? '99+' : cartItemCount}
+              </motion.span>
+            )}
+          </Button>
+          
           {user && (
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -83,9 +124,9 @@ const Navigation = () => {
             >
               <User className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-foreground">
-                {user.fullName || user.email}
+                {user.user_metadata?.full_name || user.email}
               </span>
-              {user.role === 'admin' && (
+              {userRole === 'admin' && (
                 <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">
                   Admin
                 </span>
@@ -93,15 +134,27 @@ const Navigation = () => {
             </motion.div>
           )}
           
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleLogout}
-            className="neu-button text-foreground hover:text-destructive"
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Logout
-          </Button>
+          {user ? (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogout}
+              className="neu-button text-foreground hover:text-destructive"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogin}
+              className="neu-button text-foreground hover:text-primary"
+            >
+              <LogIn className="w-4 h-4 mr-2" />
+              Login
+            </Button>
+          )}
         </div>
       </div>
     </motion.nav>

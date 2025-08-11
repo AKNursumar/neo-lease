@@ -8,6 +8,10 @@ interface Product {
   image: string;
   available: boolean;
   category?: string;
+  description?: string;
+  rating?: number;
+  reviews?: number;
+  location?: string;
 }
 
 interface ProductCardProps {
@@ -41,15 +45,30 @@ const ProductCard = ({ product, onRent }: ProductCardProps) => {
         />
       </div>
       
-      <h2 className="text-lg font-semibold text-foreground mb-1">{product.name}</h2>
+      <h2 className="text-lg font-semibold text-foreground mb-1 text-center">{product.name}</h2>
       
       {product.category && (
         <span className="text-xs text-muted-foreground mb-2 px-2 py-1 neu-inset rounded-lg">
           {product.category}
         </span>
       )}
+
+      {product.rating && product.reviews && (
+        <div className="flex items-center gap-1 mb-2">
+          <span className="text-yellow-500">⭐</span>
+          <span className="text-sm text-foreground">{product.rating}</span>
+          <span className="text-xs text-muted-foreground">({product.reviews} reviews)</span>
+        </div>
+      )}
+
+      {product.location && (
+        <div className="flex items-center gap-1 mb-2">
+          <span className="text-xs">📍</span>
+          <span className="text-xs text-muted-foreground">{product.location}</span>
+        </div>
+      )}
       
-      <p className="text-primary font-bold mb-3">₹{product.price}/day</p>
+      <p className="text-primary font-bold mb-3">₹{product.price.toLocaleString()}/day</p>
       
       <div className="flex items-center gap-2 mb-4">
         <div className={`w-2 h-2 rounded-full ${product.available ? 'bg-accent' : 'bg-destructive'}`} />

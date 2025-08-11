@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CORS Test</title>
+</head>
+<body>
+    <h1>CORS Test</h1>
+    <button onclick="testCORS()">Test CORS Request</button>
+    <div id="result"></div>
+
+    <script>
+        async function testCORS() {
+            const result = document.getElementById('result');
+            result.innerHTML = 'Testing...';
+
+            try {
+                // Test OPTIONS request (preflight)
+                const response = await fetch('http://localhost:3001/api/auth/register', {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': 'http://localhost:8080',
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type, Authorization'
+                    }
+                });
+
+                if (response.ok) {
+                    result.innerHTML = '✅ CORS preflight successful! Status: ' + response.status;
+                } else {
+                    result.innerHTML = '❌ CORS preflight failed! Status: ' + response.status;
+                }
+            } catch (error) {
+                result.innerHTML = '❌ Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

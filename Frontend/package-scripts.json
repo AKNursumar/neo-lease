@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "analyze": "vite build --mode analyze",
+    "perf": "echo 'Open http://localhost:8080 and check Console for performance metrics when DEBUG_MODE=true'",
+    "test-load": "echo 'Testing load performance...' && curl -w '@curl-format.txt' -o /dev/null -s http://localhost:8080/"
+  }
+}

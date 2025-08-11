@@ -1,6 +1,8 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSupabaseAuth } from '@/contexts/SupabaseAuthContext';
 import { motion } from 'framer-motion';
+import { getUserRole } from '@/lib/supabase';
+import { useState, useEffect } from 'react';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -8,10 +10,24 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = false }) => {
-  const { isAuthenticated, user, loading } = useAuth();
+  const { user, loading } = useSupabaseAuth();
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [roleLoading, setRoleLoading] = useState(true);
   const location = useLocation();
 
-  if (loading) {
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (user) {
+        const role = await getUserRole();
+        setUserRole(role);
+      }
+      setRoleLoading(false);
+    };
+
+    fetchUserRole();
+  }, [user]);
+
+  if (loading || roleLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <motion.div
@@ -30,12 +46,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = f
     );
   }
 
-  if (!isAuthenticated) {
+  if (!user) {
     // Redirect to login page with return url
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (adminOnly && user?.role !== 'admin') {
+  if (adminOnly && userRole !== 'admin') {
     // Show access denied message for non-admin users
     return (
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
@@ -63,7 +79,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, adminOnly = f
             </p>
             
             <p className="text-sm text-muted-foreground mb-6">
-              Current user: <strong>{user?.username}</strong> (Role: {user?.role})
+              Current user: <strong>{user?.email}</strong> (Role: {userRole || 'user'})
             </p>
             
             <div className="flex flex-col gap-3">
