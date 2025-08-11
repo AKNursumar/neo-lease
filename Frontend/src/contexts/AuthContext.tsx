@@ -18,7 +18,7 @@ interface User {
   isVerified: boolean;
 }
 
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = 'http://localhost:4000/api';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -51,26 +51,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await fetch(`${API_BASE_URL}/users/me`, {
         headers: {
           'Authorization': `Bearer ${token}`,
-        },
-        credentials: 'include',
+        }
       });
 
       if (response.ok) {
         const result = await response.json();
-        if (result.success && result.data) {
+        if (result.user) {
           setUser({
-            id: result.data.id,
-            email: result.data.email,
-            fullName: result.data.fullName,
-            role: result.data.role,
-            phone: result.data.phone,
-            isVerified: result.data.isVerified,
+            id: result.user.id,
+            email: result.user.email,
+            fullName: result.user.fullName,
+            role: result.user.role,
+            phone: result.user.phone,
+            isVerified: result.user.isVerified || false,
           });
           setIsAuthenticated(true);
         }
       } else {
-        // Token might be expired, try to refresh
-        await tryRefreshToken();
+        localStorage.removeItem('leaselink_access_token');
       }
     } catch (error) {
       console.error('Auth check failed:', error);

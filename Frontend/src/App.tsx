@@ -4,11 +4,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { SupabaseAuthProvider } from "@/contexts/SupabaseAuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DebugAuth from "@/components/DebugAuth";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import LoginWithSupabase from "./pages/LoginWithSupabase";
+import SignUpWithSupabase from "./pages/SignUpWithSupabase";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import MyRentals from "./pages/MyRentals";
@@ -23,16 +26,19 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+    <SupabaseAuthProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
           <AmbientBackground />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/login-supabase" element={<LoginWithSupabase />} />
+            <Route path="/signup-supabase" element={<SignUpWithSupabase />} />
             <Route 
               path="/dashboard" 
               element={
@@ -120,6 +126,7 @@ const App = () => (
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
+  </SupabaseAuthProvider>
   </QueryClientProvider>
 );
 

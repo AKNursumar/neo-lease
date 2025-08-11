@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import SupabaseDebug from "@/components/SupabaseDebug";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -125,6 +126,15 @@ const Index = () => {
               </Button>
             </>
           )}
+        </motion.div>
+        
+        {/* Debug Component for Development */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.0, duration: 0.6 }}
+        >
+          <SupabaseDebug />
         </motion.div>
       </motion.div>
     </div>
