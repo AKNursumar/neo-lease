@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 interface Product {
   id: number;
@@ -15,12 +16,18 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onRent }: ProductCardProps) => {
+  const navigate = useNavigate();
+
+  const handleViewDetails = () => {
+    navigate(`/product/${product.id}`);
+  };
   return (
     <motion.div
       whileHover={{ scale: 1.05, y: -5 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="neu p-4 flex flex-col items-center cursor-pointer group"
+      onClick={handleViewDetails}
     >
       <div className="w-full h-48 bg-muted rounded-xl mb-4 overflow-hidden neu-inset">
         <img 
@@ -59,7 +66,10 @@ const ProductCard = ({ product, onRent }: ProductCardProps) => {
             ? 'text-foreground hover:text-primary-foreground hover:bg-primary' 
             : 'text-muted-foreground cursor-not-allowed opacity-50'
         }`}
-        onClick={() => product.available && onRent?.(product.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (product.available) onRent?.(product.id);
+        }}
         disabled={!product.available}
       >
         {product.available ? 'Rent Now' : 'Unavailable'}
