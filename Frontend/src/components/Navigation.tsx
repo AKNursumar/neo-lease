@@ -83,7 +83,7 @@ const Navigation = () => {
             >
               <User className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-foreground">
-                {user.username}
+                {user.fullName || user.email}
               </span>
               {user.role === 'admin' && (
                 <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">

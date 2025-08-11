@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -142,11 +142,20 @@ const Login = () => {
             </motion.div>
 
             <motion.div
-              className="mt-4 text-center"
+              className="mt-4 text-center space-y-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
             >
+              <p className="text-sm text-muted-foreground">
+                Don't have an account?{" "}
+                <Link 
+                  to="/signup" 
+                  className="text-primary hover:underline font-medium"
+                >
+                  Sign Up
+                </Link>
+              </p>
               <Button
                 variant="ghost"
                 onClick={() => navigate("/")}

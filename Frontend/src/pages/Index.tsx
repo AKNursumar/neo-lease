@@ -34,7 +34,7 @@ const Index = () => {
           Your Complete Rental Management System
           {isAuthenticated && (
             <span className="block text-sm mt-2">
-              Welcome back, <strong>{user?.username}</strong> ({user?.role})
+              Welcome back, <strong>{user?.fullName || user?.email}</strong> ({user?.role})
             </span>
           )}
         </motion.p>
@@ -110,7 +110,7 @@ const Index = () => {
             <>
               <Button 
                 size="lg" 
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/signup')}
                 className="text-lg px-8 py-3"
               >
                 Get Started

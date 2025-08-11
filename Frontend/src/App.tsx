@@ -8,6 +8,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import DebugAuth from "@/components/DebugAuth";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import MyRentals from "./pages/MyRentals";
@@ -31,6 +32,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route 
               path="/dashboard" 
               element={
