@@ -75,15 +75,17 @@ const SignUp = () => {
       return;
     }
 
-    const success = await register(email, password, fullName, phone || undefined);
-    if (success) {
-      setSuccess("Account created successfully! Redirecting to dashboard...");
-      setTimeout(() => {
-        const from = location.state?.from?.pathname || "/dashboard";
-        navigate(from, { replace: true });
-      }, 1500);
-    } else {
-      setError("Registration failed. Email may already be in use.");
+    try {
+      const success = await register(email, password, fullName, phone || undefined);
+      if (success) {
+        setSuccess("Account created successfully! Redirecting to dashboard...");
+        setTimeout(() => {
+          const from = location.state?.from?.pathname || "/dashboard";
+          navigate(from, { replace: true });
+        }, 1500);
+      }
+    } catch (error: any) {
+      setError(error.message || "Registration failed. Please try again.");
     }
   };
 

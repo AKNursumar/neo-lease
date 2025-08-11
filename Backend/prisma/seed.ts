@@ -4,6 +4,15 @@ import * as argon2 from 'argon2';
 const prisma = new PrismaClient();
 
 async function seed() {
+  console.log('Database seeded successfully!');
+  console.log('You can now register new users without conflicts.');
+  console.log('');
+  console.log('For testing, you can create accounts:');
+  console.log('- Any email/password for regular users');  
+  console.log('- Use role-based access for different permissions');
+  
+  // Uncomment below if you want test users
+  /*
   // Create a test user
   const hashedPassword = await argon2.hash('password123');
   
@@ -35,6 +44,7 @@ async function seed() {
   });
 
   console.log('Seeded users:', { testUser, adminUser });
+  */
 }
 
 seed()

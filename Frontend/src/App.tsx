@@ -41,29 +41,14 @@ const App = () => (
                 </ProtectedRoute>
               } 
             />
-            <Route 
-              path="/products" 
-              element={
-                <ProtectedRoute>
-                  <Products />
-                </ProtectedRoute>
-              } 
-            />
+            <Route path="/products" element={<Products />} />
             <Route 
               path="/product/:id" 
-              element={
-                <ProtectedRoute>
-                  <ProductDetails />
-                </ProtectedRoute>
-              } 
+              element={<ProductDetails />}
             />
             <Route 
               path="/products/:category" 
-              element={
-                <ProtectedRoute>
-                  <Products />
-                </ProtectedRoute>
-              } 
+              element={<Products />}
             />
             <Route 
               path="/rentals" 

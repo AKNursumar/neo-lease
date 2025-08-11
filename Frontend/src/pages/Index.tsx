@@ -45,7 +45,7 @@ const Index = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
-          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => isAuthenticated ? navigate('/products') : navigate('/login')}>
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/products')}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <span className="text-2xl">🏠</span>
@@ -65,6 +65,7 @@ const Index = () => {
               </CardTitle>
               <CardDescription>
                 View your rental analytics and manage your account
+                {!isAuthenticated && <span className="block text-xs text-orange-600 mt-1">Requires login</span>}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -77,6 +78,7 @@ const Index = () => {
               </CardTitle>
               <CardDescription>
                 Manage inventory, users, and system settings
+                {!isAuthenticated && <span className="block text-xs text-orange-600 mt-1">Requires admin login</span>}
               </CardDescription>
             </CardHeader>
           </Card>

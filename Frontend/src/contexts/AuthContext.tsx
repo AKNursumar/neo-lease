@@ -146,22 +146,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         body: JSON.stringify({ email, password, fullName, phone }),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        if (result.success && result.data?.accessToken) {
-          localStorage.setItem('leaselink_access_token', result.data.accessToken);
-          await checkAuthStatus(); // Fetch user data
-          setLoading(false);
-          return true;
-        }
+      const result = await response.json();
+
+      if (response.ok && result.success && result.data?.accessToken) {
+        localStorage.setItem('leaselink_access_token', result.data.accessToken);
+        await checkAuthStatus(); // Fetch user data
+        setLoading(false);
+        return true;
+      } else {
+        // Handle specific error messages from backend
+        const errorMessage = result.error?.message || result.message || 'Registration failed';
+        console.error('Registration failed:', errorMessage);
+        setLoading(false);
+        throw new Error(errorMessage);
       }
-      
-      setLoading(false);
-      return false;
     } catch (error) {
       console.error('Registration failed:', error);
       setLoading(false);
-      return false;
+      throw error; // Re-throw so SignUp component can handle it
     }
   };
 
